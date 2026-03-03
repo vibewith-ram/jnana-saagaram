@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gita Guru — Vedic Wisdom for Modern Life</title>
+<title>Jnana Saagaram — Ocean of Vedic Wisdom</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -510,8 +510,8 @@
 
 <header>
   <span class="om-symbol">ॐ</span>
-  <h1>GITA GURU</h1>
-  <p>Ancient wisdom for the questions of your life</p>
+  <h1>JNANA SAAGARAM</h1>
+  <p>Ocean of Vedic wisdom — ancient light for modern life</p>
   <div class="header-divider"></div>
 </header>
 
@@ -757,13 +757,11 @@ ${versesContext}
 
 Please respond as their Guru — with deep empathy, wisdom grounded in these verses, and practical insight for their life today.`;
 
-  // ── YOUR RENDER BACKEND URL ──────────────────────────────
-  // After deploying server.js to Render.com, paste your URL below
-  // Example: "https://gita-guru-server.onrender.com"
-  const BACKEND_URL = "https://YOUR-RENDER-APP-NAME.onrender.com";
+  // Vercel serverless function — same domain, no CORS issues!
+  const BACKEND_URL = "";  // empty = same domain
 
   try {
-    const response = await fetch(`${BACKEND_URL}/ask`, {
+    const response = await fetch(`/api/ask`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ systemPrompt, userPrompt })
