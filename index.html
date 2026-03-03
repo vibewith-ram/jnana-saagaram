@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gita Guru — Vedic Wisdom for Modern Life</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --saffron: #E8730A;
+    --saffron-light: #F4A23A;
+    --saffron-glow: rgba(232, 115, 10, 0.15);
+    --deep-maroon: #1A0A00;
+    --dark-bg: #0D0600;
+    --card-bg: rgba(26, 14, 4, 0.85);
+    --gold: #C9943A;
+    --gold-light: #E8C87A;
+    --cream: #F5EDD8;
+    --cream-dim: rgba(245, 237, 216, 0.7);
+    --text-primary: #F0E6CC;
+    --text-secondary: rgba(240, 230, 204, 0.65);
+    --border: rgba(201, 148, 58, 0.2);
+    --border-bright: rgba(201, 148, 58, 0.5);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark-bg);
+    color: var(--text-primary);
+    font-family: 'Crimson Pro', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Mandala background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px;
+    height: 900px;
+    background: 
+      radial-gradient(circle at center, transparent 120px, rgba(232,115,10,0.03) 121px, transparent 180px),
+      radial-gradient(circle at center, transparent 200px, rgba(201,148,58,0.04) 201px, transparent 260px),
+      radial-gradient(circle at center, transparent 290px, rgba(232,115,10,0.03) 291px, transparent 350px),
+      radial-gradient(circle at center, transparent 380px, rgba(201,148,58,0.03) 381px, transparent 440px);
+    pointer-events: none;
+    z-index: 0;
+    animation: slowRotate 120s linear infinite;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(232,115,10,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 100% 50%, rgba(201,148,58,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 0% 50%, rgba(232,115,10,0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes slowRotate {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* HEADER */
+  header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 52px 24px 36px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .om-symbol {
+    font-size: 2.8rem;
+    color: var(--saffron);
+    display: block;
+    margin-bottom: 12px;
+    animation: pulse 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 12px rgba(232,115,10,0.5));
+  }
+
+  header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--saffron-light) 40%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  header p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.04em;
+  }
+
+  .header-divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto 0;
+  }
+
+  /* MAIN LAYOUT */
+  .app-container {
+    position: relative;
+    z-index: 10;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* TOPIC PILLS */
+  .topic-section {
+    animation: fadeInUp 0.6s ease both;
+    animation-delay: 0.1s;
+  }
+
+  .topic-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0.8;
+  }
+
+  .topic-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .pill {
+    padding: 8px 18px;
+    border: 1px solid var(--border-bright);
+    border-radius: 50px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.95rem;
+    color: var(--cream-dim);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: transparent;
+    letter-spacing: 0.02em;
+  }
+
+  .pill:hover {
+    border-color: var(--saffron);
+    color: var(--cream);
+    background: var(--saffron-glow);
+    transform: translateY(-1px);
+  }
+
+  /* INPUT AREA */
+  .input-section {
+    animation: fadeInUp 0.6s ease both;
+    animation-delay: 0.2s;
+  }
+
+  .input-wrapper {
+    position: relative;
+    border: 1px solid var(--border-bright);
+    border-radius: 16px;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .input-wrapper:focus-within {
+    border-color: var(--saffron);
+    box-shadow: 0 0 0 3px rgba(232, 115, 10, 0.1), 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .input-wrapper textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    padding: 20px 24px 16px;
+    resize: none;
+    min-height: 110px;
+    caret-color: var(--saffron);
+  }
+
+  .input-wrapper textarea::placeholder {
+    color: rgba(240, 230, 204, 0.3);
+    font-style: italic;
+  }
+
+  .input-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px 14px 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .char-hint {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  .ask-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 26px;
+    background: linear-gradient(135deg, var(--saffron) 0%, #C85A00 100%);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-family: 'Cinzel', serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 16px rgba(232, 115, 10, 0.3);
+  }
+
+  .ask-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(232, 115, 10, 0.45);
+  }
+
+  .ask-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* RESPONSE AREA */
+  .response-area {
+    animation: fadeInUp 0.5s ease both;
+  }
+
+  .response-card {
+    border: 1px solid var(--border-bright);
+    border-radius: 20px;
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    overflow: hidden;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.5);
+  }
+
+  .response-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(232, 115, 10, 0.05);
+  }
+
+  .guru-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border-bright);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    background: rgba(232, 115, 10, 0.1);
+    flex-shrink: 0;
+  }
+
+  .guru-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--gold-light);
+  }
+
+  .guru-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  .response-body {
+    padding: 28px 28px 24px;
+  }
+
+  /* Question echoed */
+  .question-echo {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    border-left: 2px solid var(--saffron);
+    padding: 8px 0 8px 16px;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  /* Verse card */
+  .verse-card {
+    background: rgba(232, 115, 10, 0.06);
+    border: 1px solid rgba(232, 115, 10, 0.2);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 22px;
+  }
+
+  .verse-ref {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: var(--saffron-light);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .verse-sanskrit {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--gold-light);
+    line-height: 1.8;
+    margin-bottom: 10px;
+  }
+
+  .verse-translation {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-style: italic;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
+
+  /* Guru response text */
+  .guru-response-text {
+    font-size: 1.12rem;
+    line-height: 1.85;
+    color: var(--text-primary);
+    font-family: 'Crimson Pro', serif;
+  }
+
+  .guru-response-text p {
+    margin-bottom: 16px;
+  }
+
+  .guru-response-text p:last-child {
+    margin-bottom: 0;
+  }
+
+  .response-footer {
+    padding: 14px 24px 18px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chapter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    background: rgba(201, 148, 58, 0.1);
+    border: 1px solid rgba(201, 148, 58, 0.25);
+    border-radius: 50px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+  }
+
+  .ask-again {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+  }
+
+  .ask-again:hover { color: var(--saffron-light); }
+
+  /* LOADING STATE */
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 48px 24px;
+  }
+
+  .loading-mandala {
+    width: 56px;
+    height: 56px;
+    border: 2px solid var(--border);
+    border-top-color: var(--saffron);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  .loading-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    text-align: center;
+  }
+
+  /* ERROR */
+  .error-state {
+    padding: 28px;
+    text-align: center;
+    color: rgba(255, 120, 80, 0.85);
+    font-style: italic;
+    font-size: 1rem;
+  }
+
+  /* WISDOM STRIPS */
+  .wisdom-strip {
+    text-align: center;
+    padding: 16px;
+    animation: fadeInUp 0.6s ease both;
+    animation-delay: 0.3s;
+  }
+
+  .wisdom-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .wisdom-source {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    margin-top: 8px;
+    opacity: 0.7;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(201,148,58,0.3); border-radius: 3px; }
+
+  /* Decorative lotus divider */
+  .lotus-divider {
+    text-align: center;
+    color: var(--gold);
+    opacity: 0.4;
+    font-size: 1.2rem;
+    letter-spacing: 0.5em;
+    margin: 4px 0;
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 36px 20px 28px; }
+    .app-container { padding: 28px 16px 60px; }
+    .response-body { padding: 20px 18px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="om-symbol">ॐ</span>
+  <h1>GITA GURU</h1>
+  <p>Ancient wisdom for the questions of your life</p>
+  <div class="header-divider"></div>
+</header>
+
+<div class="app-container">
+
+  <!-- Suggested topics -->
+  <div class="topic-section">
+    <div class="topic-label">Seek guidance on</div>
+    <div class="topic-pills">
+      <button class="pill" onclick="setQuestion('I feel lost about my purpose in life')">Purpose & Dharma</button>
+      <button class="pill" onclick="setQuestion('I work so hard but never see results, I feel like giving up')">Work & Results</button>
+      <button class="pill" onclick="setQuestion('I am grieving the loss of someone I love')">Grief & Loss</button>
+      <button class="pill" onclick="setQuestion('My mind is restless and I cannot find peace')">Inner Peace</button>
+      <button class="pill" onclick="setQuestion('I am afraid of failure and it is stopping me from acting')">Fear & Courage</button>
+      <button class="pill" onclick="setQuestion('I feel angry and betrayed by someone close to me')">Anger & Forgiveness</button>
+      <button class="pill" onclick="setQuestion('What is the nature of the soul and death?')">Soul & Death</button>
+      <button class="pill" onclick="setQuestion('How do I find balance between family duties and my own desires?')">Duty & Desire</button>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="input-section">
+    <div class="input-wrapper">
+      <textarea id="questionInput" placeholder="Ask the Guru your question… What weighs upon your heart today?" rows="4" onkeydown="handleKey(event)"></textarea>
+      <div class="input-footer">
+        <span class="char-hint">Press Shift+Enter for new line · Enter to seek wisdom</span>
+        <button class="ask-btn" id="askBtn" onclick="seekWisdom()">
+          <span>🪷</span>
+          <span>SEEK WISDOM</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Response -->
+  <div id="responseArea"></div>
+
+  <!-- Default wisdom strip -->
+  <div class="wisdom-strip" id="wisdomStrip">
+    <div class="lotus-divider">❋ ❋ ❋</div>
+    <div class="wisdom-quote">"You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions."</div>
+    <div class="wisdom-source">— BHAGAVAD GITA, CHAPTER 2, VERSE 47</div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// BHAGAVAD GITA KNOWLEDGE BASE
+// Key verses across major themes — our "vector db" 
+// In production this would be ChromaDB + embeddings
+// Here we use semantic keyword matching as a demo
+// ═══════════════════════════════════════════════
+const GITA_VERSES = [
+  {
+    ref: "Chapter 2, Verse 47",
+    chapter: 2, verse: 47,
+    sanskrit: "Karmanye vadhikaraste ma phaleshu kadachana\nMa karma phala hetur bhur ma te sango stv akarmani",
+    translation: "You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself the cause of the results, and never be attached to inaction.",
+    themes: ["work", "results", "action", "karma", "effort", "reward", "giving up", "hard work", "outcome", "fruits", "duty", "detachment"]
+  },
+  {
+    ref: "Chapter 2, Verse 20",
+    chapter: 2, verse: 20,
+    sanskrit: "Na jayate mriyate va kadacin\nnayam bhutva bhavita va na bhuyah\nAjo nityah sasvato yam purano\nna hanyate hanyamane sarire",
+    translation: "The soul is never born, nor does it die. It has not come into being, and will not come into being. It is unborn, eternal, ever-existing, and primeval. It is not slain when the body is slain.",
+    themes: ["death", "soul", "grief", "loss", "eternal", "body", "atman", "immortal", "afterlife", "nature of soul"]
+  },
+  {
+    ref: "Chapter 2, Verse 14",
+    chapter: 2, verse: 14,
+    sanskrit: "Matra-sparsas tu kaunteya\nshitoshna-sukha-duhkha-dah\nagamapayino nityas\ntams titikshasva bharata",
+    translation: "O son of Kunti, the transient happiness and distress of life arise from contact with the material senses. They appear and disappear like winter and summer seasons. One must learn to endure them without being disturbed.",
+    themes: ["grief", "pain", "suffering", "loss", "impermanence", "endure", "sadness", "emotions", "peace", "difficult times"]
+  },
+  {
+    ref: "Chapter 6, Verse 5",
+    chapter: 6, verse: 5,
+    sanskrit: "Uddhared atmanatmanam\nnatmanam avasadayet\natmaiva hy atmano bandhur\natmaiva ripur atmanah",
+    translation: "One must elevate, not degrade oneself with one's own mind. The mind is the friend of the conditioned soul, and the mind is also the enemy of the conditioned soul.",
+    themes: ["mind", "self", "anxiety", "depression", "negative thoughts", "inner strength", "willpower", "mental peace", "self improvement"]
+  },
+  {
+    ref: "Chapter 6, Verse 35",
+    chapter: 6, verse: 35,
+    sanskrit: "Sri-bhagavan uvaca:\nasamsayam maha-baho\nmano durnigraham calam\nabhyasena tu kaunteya\nvairagyena ca grhyate",
+    translation: "Lord Krishna said: O mighty-armed Arjuna, it is undoubtedly very difficult to curb the restless mind, but it is possible by constant practice and by detachment.",
+    themes: ["restless mind", "peace", "anxiety", "meditation", "practice", "focus", "concentration", "discipline", "calm"]
+  },
+  {
+    ref: "Chapter 3, Verse 19",
+    chapter: 3, verse: 19,
+    sanskrit: "Tasmad asaktah satatam\nkaryam karma samacara\nasakto hy acaran karma\nparam apnoti purushah",
+    translation: "Therefore, without being attached to the fruits of activities, one should act as a matter of duty, for by working without attachment one attains the Supreme.",
+    themes: ["duty", "work", "detachment", "selfless", "responsibility", "dharma", "purpose", "career"]
+  },
+  {
+    ref: "Chapter 2, Verse 3",
+    chapter: 2, verse: 3,
+    sanskrit: "Klaibyam ma sma gamah partha\nnaitattvayy upapadyate\nkshudram hridaya-daurbalyam\ntyaktvottishtha parantapa",
+    translation: "O Arjuna, do not yield to this degrading impotence. It does not become you. Give up such petty weakness of heart and arise, O chastiser of the enemy.",
+    themes: ["fear", "courage", "weakness", "overcome", "strength", "arise", "warrior", "giving up", "cowardice", "bravery"]
+  },
+  {
+    ref: "Chapter 4, Verse 38",
+    chapter: 4, verse: 38,
+    sanskrit: "Na hi jnanena sadrsam\npavitram iha vidyate\ntat svayam yoga-samsiddhah\nkalenatmani vindati",
+    translation: "In this world, there is nothing so sublime and pure as transcendental knowledge. Such knowledge is the mature fruit of all mysticism. And one who has achieved this enjoys the self within himself in due course of time.",
+    themes: ["knowledge", "wisdom", "learning", "growth", "spiritual", "understanding", "enlightenment"]
+  },
+  {
+    ref: "Chapter 16, Verses 1-3",
+    chapter: 16, verse: 1,
+    sanskrit: "Abhayam sattva-samsuddhir\njnana-yoga-vyavasthitih\ndanam damas ca yajnas ca\nsvadhyayas tapa arjavam",
+    translation: "Fearlessness, purity of heart, cultivation of spiritual knowledge, charity, self-control, performance of sacrifice, study of the Vedas, austerity and simplicity — these are the divine qualities.",
+    themes: ["anger", "betrayal", "forgiveness", "divine qualities", "character", "virtue", "purity", "spiritual growth"]
+  },
+  {
+    ref: "Chapter 18, Verse 66",
+    chapter: 18, verse: 66,
+    sanskrit: "Sarva-dharman parityajya\nmam ekam saranam vraja\naham tvam sarva-papebhyo\nmokshayishyami ma sucah",
+    translation: "Abandon all varieties of dharmas and simply surrender unto Me. I shall deliver you from all sinful reactions. Do not fear.",
+    themes: ["surrender", "faith", "trust", "God", "divine", "moksha", "liberation", "fear", "purpose", "lost", "direction"]
+  },
+  {
+    ref: "Chapter 2, Verse 62-63",
+    chapter: 2, verse: 62,
+    sanskrit: "Dhyayato vishayan pumsah\nsangas teshupajayte\nSangat sanjayate kamah\nkamat krodho bhijayate",
+    translation: "While contemplating the objects of the senses, one develops attachment to them. From attachment comes desire, and from desire comes anger.",
+    themes: ["anger", "desire", "attachment", "emotions", "control", "mind", "frustration", "betrayal"]
+  },
+  {
+    ref: "Chapter 5, Verse 21",
+    chapter: 5, verse: 21,
+    sanskrit: "Bahya-sparsesv asaktatma\nvindaty atmani yat sukham\nsa brahma-yoga-yuktatma\nsukham akshayam asnute",
+    translation: "Such a liberated person is not attracted to material sense pleasure, but is always in trance, enjoying the pleasure within. In this way the self-realized person enjoys unlimited happiness, for he concentrates on the Supreme.",
+    themes: ["happiness", "inner peace", "contentment", "pleasure", "balance", "family", "desires", "material", "joy"]
+  },
+  {
+    ref: "Chapter 3, Verse 35",
+    chapter: 3, verse: 35,
+    sanskrit: "Sreyan sva-dharmo vigunah\npara-dharmat sv-anushthitat\nsva-dharme nidhanam sreyah\npara-dharmo bhayavahah",
+    translation: "It is far better to discharge one's own prescribed duties, even though faulty, than another's duties perfectly. It is better to die in the discharge of one's own duty than to follow the path of another.",
+    themes: ["duty", "dharma", "purpose", "calling", "life path", "career", "family duty", "balance", "role", "responsibilities"]
+  }
+];
+
+// ═══════════════════════════════════════════════
+// SIMPLE SEMANTIC MATCHING (simulates vector search)
+// In production: replace with real embeddings + ChromaDB
+// ═══════════════════════════════════════════════
+function findRelevantVerses(question) {
+  const q = question.toLowerCase();
+  const words = q.split(/\s+/);
+  
+  const scored = GITA_VERSES.map(verse => {
+    let score = 0;
+    verse.themes.forEach(theme => {
+      if (q.includes(theme)) score += 3;
+      theme.split(' ').forEach(themeWord => {
+        words.forEach(word => {
+          if (word.length > 3 && themeWord.includes(word)) score += 1;
+          if (themeWord === word) score += 2;
+        });
+      });
+    });
+    return { verse, score };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+  const top = scored.slice(0, 2).filter(s => s.score > 0).map(s => s.verse);
+  
+  // fallback to 2.47 if nothing matches
+  if (top.length === 0) return [GITA_VERSES[0]];
+  return top;
+}
+
+// ═══════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════
+function setQuestion(q) {
+  document.getElementById('questionInput').value = q;
+  document.getElementById('questionInput').focus();
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    seekWisdom();
+  }
+}
+
+// ═══════════════════════════════════════════════
+// MAIN — CALL CLAUDE API
+// ═══════════════════════════════════════════════
+async function seekWisdom() {
+  const question = document.getElementById('questionInput').value.trim();
+  if (!question) return;
+
+  const btn = document.getElementById('askBtn');
+  const responseArea = document.getElementById('responseArea');
+  const wisdomStrip = document.getElementById('wisdomStrip');
+
+  btn.disabled = true;
+  wisdomStrip.style.display = 'none';
+
+  // Find relevant verses
+  const relevantVerses = findRelevantVerses(question);
+
+  // Show loading
+  responseArea.innerHTML = `
+    <div class="response-card">
+      <div class="loading-state">
+        <div class="loading-mandala"></div>
+        <div class="loading-text">The Guru contemplates your question…<br><span style="font-size:0.85rem;opacity:0.6">Seeking wisdom from the Gita</span></div>
+      </div>
+    </div>`;
+
+  // Build context for Claude
+  const versesContext = relevantVerses.map(v => 
+    `${v.ref}:\nSanskrit: ${v.sanskrit}\nTranslation: ${v.translation}`
+  ).join('\n\n');
+
+  const systemPrompt = `You are a deeply compassionate and wise Vedic Guru with profound knowledge of the Bhagavad Gita. You speak with warmth, empathy, and clarity. 
+
+When responding:
+- Address the seeker's emotional state first with deep empathy
+- Reference the provided Gita verses naturally in your response  
+- Explain the ancient wisdom in simple, modern, relatable language
+- Draw a clear bridge between the ancient verse and the seeker's specific situation
+- End with a gentle, practical insight or question for self-reflection
+- Keep your response to 3-4 flowing paragraphs — profound but not overwhelming
+- Do NOT use bullet points or headers. Write as flowing, warm prose.
+- Occasionally use Sanskrit terms but always explain them simply
+- Your tone: like a loving, wise grandparent who has seen life deeply`;
+
+  const userPrompt = `A seeker comes to you with this heartfelt question:
+"${question}"
+
+The most relevant verses from the Bhagavad Gita for this question are:
+
+${versesContext}
+
+Please respond as their Guru — with deep empathy, wisdom grounded in these verses, and practical insight for their life today.`;
+
+  // ── YOUR RENDER BACKEND URL ──────────────────────────────
+  // After deploying server.js to Render.com, paste your URL below
+  // Example: "https://gita-guru-server.onrender.com"
+  const BACKEND_URL = "https://YOUR-RENDER-APP-NAME.onrender.com";
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/ask`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ systemPrompt, userPrompt })
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Server error");
+    const guruText = data.text || "The Guru is momentarily silent. Please try again.";
+
+    // Format response paragraphs
+    const paragraphs = guruText.split('\n\n').filter(p => p.trim()).map(p => 
+      `<p>${p.trim()}</p>`
+    ).join('');
+
+    // Build verse cards
+    const verseCards = relevantVerses.map(v => `
+      <div class="verse-card">
+        <div class="verse-ref">✦ ${v.ref}</div>
+        <div class="verse-sanskrit">${v.sanskrit.replace(/\n/g, '<br>')}</div>
+        <div class="verse-translation">"${v.translation}"</div>
+      </div>
+    `).join('');
+
+    const chapterTags = relevantVerses.map(v => 
+      `<span class="chapter-tag">✦ Ch. ${v.chapter}, V. ${v.verse}</span>`
+    ).join(' ');
+
+    responseArea.innerHTML = `
+      <div class="response-card">
+        <div class="response-header">
+          <div class="guru-avatar">🪷</div>
+          <div>
+            <div class="guru-name">THE GURU SPEAKS</div>
+            <div class="guru-subtitle">Bhagavad Gita · Vedic Wisdom</div>
+          </div>
+        </div>
+        <div class="response-body">
+          <div class="question-echo">"${question}"</div>
+          ${verseCards}
+          <div class="guru-response-text">${paragraphs}</div>
+        </div>
+        <div class="response-footer">
+          <div style="display:flex;gap:8px;flex-wrap:wrap">${chapterTags}</div>
+          <button class="ask-again" onclick="clearResponse()">Ask another question →</button>
+        </div>
+      </div>`;
+
+  } catch (err) {
+    responseArea.innerHTML = `
+      <div class="response-card">
+        <div class="error-state">
+          The Guru's voice is temporarily distant…<br>
+          <span style="font-size:0.85rem;opacity:0.7">${err.message}</span>
+        </div>
+      </div>`;
+  }
+
+  btn.disabled = false;
+}
+
+function clearResponse() {
+  document.getElementById('responseArea').innerHTML = '';
+  document.getElementById('wisdomStrip').style.display = 'block';
+  document.getElementById('questionInput').value = '';
+  document.getElementById('questionInput').focus();
+}
+</script>
+</body>
+</html>
