@@ -1,79 +1,149 @@
-# 🕉️ Jnana Saagaram — Ocean of Vedic Wisdom
+# 🕉️ Jnana Saagaram — Full Version (All 700 Gita Verses)
 
-An AI-powered Vedic counselor grounded in the Bhagavad Gita. Ask any life question and receive wisdom from ancient Indian scriptures, explained in warm, modern language.
-
-**Live app:** [jnana-saagaram.vercel.app](https://jnana-saagaram.vercel.app)
+An AI Vedic Guru powered by real vector embeddings across all 700 Bhagavad Gita verses.
 
 ---
 
-## ✨ Features
+## 🏗️ Architecture
 
-- 13 key Bhagavad Gita verses across major life themes
-- AI Guru responses powered by Claude (Anthropic)
-- Sanskrit shlokas with translations
-- Beautiful saffron & gold spiritual UI
-- Fully serverless — no database needed
+```
+User Question
+     ↓
+Vercel Frontend (index.html)
+     ↓
+Vercel Serverless Function (api/ask.js)
+     ↓                        ↓                    ↓
+OpenAI Embeddings      Pinecone Vector DB     Anthropic Claude
+(question → vector)    (find top 3 verses)    (Guru response)
+```
 
 ---
 
-## 📁 Structure
+## 🚀 Setup Guide (One Time — ~30 minutes)
+
+### PART 1 — Get Your API Keys (10 mins)
+
+**1. OpenAI API Key** (for embeddings)
+- Go to platform.openai.com
+- Sign up → API Keys → Create new key
+- Cost: ~$0.001 for all 700 verses (one-time) + tiny cost per query
+
+**2. Pinecone API Key** (for vector database)
+- Go to app.pinecone.io
+- Sign up free → API Keys → Copy key
+- Free tier allows up to 1 million vectors — more than enough!
+
+**3. Anthropic API Key** (you already have this!)
+- Already in your Vercel environment ✅
+
+---
+
+### PART 2 — Generate Embeddings (5 mins on your laptop)
+
+This runs ONCE to convert all 700 verses to vectors and store in Pinecone.
+
+**Step 1: Install Python dependencies**
+```bash
+pip install openai pinecone-client requests
+```
+
+**Step 2: Set your API keys**
+```bash
+# Mac/Linux:
+export OPENAI_API_KEY="sk-..."
+export PINECONE_API_KEY="pcsk_..."
+
+# Windows:
+set OPENAI_API_KEY=sk-...
+set PINECONE_API_KEY=pcsk_...
+```
+
+**Step 3: Run the embedding script**
+```bash
+python generate_embeddings.py
+```
+
+This will:
+- Fetch all 700 verses from the free Gita API
+- Generate embeddings for each verse
+- Upload to Pinecone
+- Takes ~5 minutes
+- Costs ~$0.001 total
+
+**Step 4: Get your Pinecone Host URL**
+- Go to app.pinecone.io → your index → copy the HOST URL
+- It looks like: `https://jnana-saagaram-xxxx.svc.aped-xxxx.pinecone.io`
+
+---
+
+### PART 3 — Configure Vercel (5 mins)
+
+Go to your Vercel project → Settings → Environment Variables
+
+Add these 4 variables:
+```
+ANTHROPIC_API_KEY  = sk-ant-...          (you have this already)
+OPENAI_API_KEY     = sk-...              (from platform.openai.com)
+PINECONE_API_KEY   = pcsk_...            (from app.pinecone.io)
+PINECONE_HOST      = https://jnana-saagaram-xxxx.svc.pinecone.io
+```
+
+Then: Deployments → Redeploy
+
+---
+
+### PART 4 — Upload New Files to GitHub (5 mins)
+
+Upload these files to your `jnana-saagaram` GitHub repo:
+```
+index.html          ← replace existing (updated frontend)
+api/ask.js          ← replace existing (upgraded backend)
+generate_embeddings.py  ← new (run locally only, don't need in repo)
+requirements.txt    ← new
+README.md           ← replace existing
+```
+
+Vercel will auto-deploy when you push to GitHub. ✅
+
+---
+
+## 📁 File Structure
 
 ```
 jnana-saagaram/
-  index.html     ← Frontend (the full web app)
+  index.html              ← Frontend web app
+  vercel.json             ← Vercel routing config
   api/
-    ask.js       ← Serverless backend (Vercel function)
-  vercel.json    ← Vercel routing config
-  README.md      ← This file
+    ask.js                ← Backend: embed question → search Pinecone → Claude
+  generate_embeddings.py  ← Run locally once to populate Pinecone
+  requirements.txt        ← Python dependencies for embedding script
+  README.md               ← This file
 ```
 
 ---
 
-## 🚀 Deploy to Vercel (5 minutes)
+## 💰 Cost Breakdown
 
-### Step 1: Import repo to Vercel
-1. Go to [vercel.com](https://vercel.com)
-2. Sign in with GitHub
-3. Click **"Add New Project"**
-4. Import **`jnana-saagaram`** repo
-5. Click **"Deploy"** (default settings work perfectly)
+| Service | One-time Setup | Per Query |
+|---|---|---|
+| OpenAI Embeddings | ~$0.001 (700 verses) | ~$0.000020 |
+| Pinecone | Free | Free |
+| Anthropic Claude | — | ~$0.003 |
+| **Total per query** | | **~$0.003** |
 
-### Step 2: Add your API key
-1. In Vercel dashboard → your project → **"Settings"**
-2. Click **"Environment Variables"**
-3. Add:
-   - **Name:** `ANTHROPIC_API_KEY`
-   - **Value:** `sk-ant-api03-...` (your key from [console.anthropic.com](https://console.anthropic.com))
-4. Click **"Save"**
-5. Go to **"Deployments"** → click **"Redeploy"**
-
-### Step 3: Share! 🎉
-Your app is live at:
-```
-https://jnana-saagaram.vercel.app
-```
+$5 credit = ~1,600 conversations 🙏
 
 ---
 
-## 🛠️ Tech Stack
+## 🗺️ Future Roadmap
 
-| Layer | Technology |
-|---|---|
-| Frontend | HTML, CSS, Vanilla JavaScript |
-| Backend | Vercel Serverless Function (Node.js) |
-| AI | Claude Sonnet (Anthropic API) |
-| Hosting | Vercel (free tier) |
-
----
-
-## 🗺️ Roadmap
-
-- [ ] Expand to all 700 Bhagavad Gita verses
-- [ ] Add Upanishads, Ramayana, Mahabharata
-- [ ] Real vector embeddings with ChromaDB
-- [ ] Multilingual support (Sanskrit, Hindi, Telugu, Tamil)
+- [ ] Add Upanishads (108 texts)
+- [ ] Add Ramayana and Mahabharata
+- [ ] Multilingual support (Hindi, Telugu, Tamil, Sanskrit)
 - [ ] Voice input and audio responses
+- [ ] Conversation memory (multi-turn dialogue)
+- [ ] Custom domain: jnanasaagaram.com
 
 ---
 
-*Built with 🙏 — Jnana Saagaram means "Ocean of Knowledge" in Sanskrit*
+*🕉️ Jnana Saagaram means "Ocean of Knowledge" in Sanskrit*
